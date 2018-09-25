@@ -1,21 +1,50 @@
 package com.gmail.ndonskih63;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class Group {
 
 	private Student[] students = new Student[10];
+	private File group = new File("MyGroup.doc");
+	private static Scanner sc = new Scanner(System.in);
 	
-
 	public Group() {
 		super();
 	}
-
-	 public int groupSize(){
+	
+	 public void saveToFile() {
+	        try (PrintWriter pw = new PrintWriter(group)) {
+	            group.createNewFile();
+	            for (Student person : students) {
+	                if (person != null)
+	                    pw.println(person.getSurname() + " " + person.getName() + " | age: " + person.getAge() + 
+	                    		" | sex: " + person.getSex() + " | course: " + person.getCourse() + 
+	                    		" | RecBook number:" + person.getRecBookNum() + " | Average score: " + person.getAverageScore());
+	            }
+	        } catch (IOException e) {
+	            System.out.println("Error!");
+	        }
+	        System.out.println("All students were saved to the file ");
+	    }
+	 
+	 public void readFile(String gr) {
+		 try(BufferedReader br =new BufferedReader(new FileReader(group))){
+			 for(;(gr = br.readLine())!=null;)
+			 System.out.println(gr);
+			 }catch(IOException e){
+			 System.out.println("ERROR");
+			 }
+	 }
+	 
+	public int groupSize(){
 	        return students.length;
 	    }
-
 	    public void addStudent(Student student) throws DontMoreException {
 	        for (int i = 0; i < students.length; i++) {
 	            if (this.studentsAmount() >= students.length) {
@@ -28,39 +57,27 @@ public class Group {
 	            }
 	        }
 	    }
-
-	    public void addStudent2() throws DontMoreException {
-	        if (this.studentsAmount() >= students.length) {
-	            throw new DontMoreException();
-	        }
-	        for (int i = 0; i < students.length; i++) {
-	            if (students[i] == null) {
-	                Scanner sc = new Scanner(System.in);
-	                System.out.println("Input Student's surname");
-	                String surname = sc.nextLine();
-	                System.out.println("Input Student's name");
-	                String name = sc.nextLine();
-	                System.out.println("Input Student's age");
-	                int age = sc.nextInt();
-	                System.out.println("Input Student's sex(only male or female)");
-	                String sex = sc.nextLine();
-	                if (!sex.equals("male") && !sex.equals("female")) {
-	                        sex = sc.nextLine();
-	                    }
-	                System.out.println("Insert Student's course");
-	                int course = sc.nextInt();
-	                System.out.println("Insert Student's recBookNum");
-	                int recBookNum = sc.nextInt();
-	                System.out.println("Insert Student's averageScore");
-	                int averageScore = sc.nextInt();
-	                Student student = new Student(surname, name, age, sex, 
-	    					 course, recBookNum, averageScore);
-	                students[i] = student;
-	                break;
-	            }
-	        }
+	    public void addStudent2() throws DontMoreException{
+	        Scanner sc = new Scanner(System.in);
+	        System.out.println("Input Surname");
+	        String sn = sc.nextLine();
+	        System.out.println("Input Name");
+	        String n = sc.nextLine();
+	        System.out.println("Input sex");
+	        String sx = sc.nextLine();
+	        System.out.println("Input age");
+	        int ag = sc.nextInt();
+	        System.out.println("Input course");
+	        int cr = sc.nextInt();
+	        System.out.println("Input RecBook number");
+	        int rbn = sc.nextInt();
+	        System.out.println("Input average score");
+	        int as = sc.nextInt();
+	        addStudent(new Student(sn, n, ag, sx, cr, rbn, as));
+	        sc.close();
 	    }
-
+	    
+	    
 	    public Student searchStudent(String surname) {
 	        for (Student s : students) {
 	            if (s != null && s.getSurname().equals(surname)) {
@@ -91,8 +108,7 @@ public class Group {
 
 	    public int studentsAmount() {
 	        int counter = 0;
-	        for (Student s : students
-	                ) {
+	        for (Student s : students) {
 	            if (s != null) {
 	                counter++;
 	            }
