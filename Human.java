@@ -1,6 +1,6 @@
 package com.gmail.ndonskih63;
 
-public class Human {
+public class Human implements Serializable{
 	
 	private String surname;
 	private String name;
