@@ -1,6 +1,6 @@
 package com.gmail.ndonskih63;
 
-public class Student extends Human {
+public class Student extends Human implements Serializable{
 
 	private int course;
 	private int recBookNum;
